@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recetas Médicas - Imprenta Gráfica Vallarta</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="encabezado animar-entrada">
+    <div class="encabezado-contenido">
+      <img src="assets/pimpenta.png" alt="Logo" class="logo" />
+      <h1>Recetas Médicas</h1>
+    </div>
+  </header>
+
+  <main class="contenido animar-entrada">
+
+    <div class="tarjeta">
+      <div class="buscador">
+        <input type="text" id="busqueda" placeholder="🔍 Buscar doctor por nombre..." />
+      </div>
+
+      <div class="acciones">
+        <a href="crear.html" class="btn animar-boton">+ Agregar nuevo doctor</a>
+      </div>
+    </div>
+
+    <div id="tablaDoctores" class="tabla tarjeta animar-entrada">
+      <!-- Aquí se insertarán los doctores dinámicamente -->
+    </div>
+
+  </main>
+
+  <footer class="pie animar-entrada">
+    <p>© Imprenta Gráfica Vallarta</p>
+  </footer>
+
+  <script type="module" src="JS/supabase.js"></script>
+  <script type="module" src="JS/crud.js"></script>
+</body>
+</html>

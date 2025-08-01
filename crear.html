@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agregar Doctor - Imprenta Gráfica Vallarta</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="encabezado animar-entrada">
+    <div class="encabezado-contenido">
+      <img src="assets/pimpenta.png" alt="Logo" class="logo" />
+      <h1>Agregar Nuevo Doctor</h1>
+    </div>
+  </header>
+
+  <main class="contenido animar-entrada">
+
+    <form class="formulario tarjeta animar-entrada" id="formAgregar">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" placeholder="Ej. Dr. Juan Pérez" required />
+
+      <label for="sucursal">Sucursal:</label>
+      <select id="sucursal" required>
+        <option value="">Selecciona una</option>
+        <option value="Vallarta">Vallarta</option>
+        <option value="Nayarit">Nayarit</option>
+      </select>
+
+      <label for="pagina">Página en el archivo:</label>
+      <input type="number" id="pagina" min="1" placeholder="Ej. 14" required />
+
+      <button type="submit" class="btn animar-boton">✔ Guardar Doctor</button>
+    </form>
+
+    <div class="acciones animar-entrada">
+      <a href="index.html" class="btn">← Volver al inicio</a>
+    </div>
+
+  </main>
+
+  <footer class="pie animar-entrada">
+    <p>© Imprenta Gráfica Vallarta</p>
+  </footer>
+
+  <script type="module">
+    import { supabase } from './JS/supabase.js';
+
+    const form = document.getElementById('formAgregar');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const sucursal = document.getElementById('sucursal').value;
+      const pagina = parseInt(document.getElementById('pagina').value);
+
+      const { error } = await supabase.from('doctores').insert([
+        { nombre_completo: nombre, sucursal: sucursal, pagina: pagina }
+      ]);
+
+      if (error) {
+        alert('❌ Error al agregar doctor.');
+        console.error(error);
+      } else {
+        alert('✅ Doctor agregado correctamente.');
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

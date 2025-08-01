@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Doctor - Imprenta Gráfica Vallarta</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="encabezado animar-entrada">
+    <div class="encabezado-contenido">
+      <img src="assets/pimpenta.png" alt="Logo" class="logo" />
+      <h1>Editar Información del Doctor</h1>
+    </div>
+  </header>
+
+  <main class="contenido animar-entrada">
+
+    <form class="formulario tarjeta animar-entrada" id="formEditar">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" required />
+
+      <label for="sucursal">Sucursal:</label>
+      <select id="sucursal" required>
+        <option value="Vallarta">Vallarta</option>
+        <option value="Nayarit">Nayarit</option>
+      </select>
+
+      <label for="pagina">Página en el archivo:</label>
+      <input type="number" id="pagina" min="1" required />
+
+      <button type="submit" class="btn animar-boton">Guardar Cambios</button>
+    </form>
+
+    <div class="acciones animar-entrada">
+      <a href="index.html" class="btn">← Volver al inicio</a>
+    </div>
+
+  </main>
+
+  <footer class="pie animar-entrada">
+    <p>© Imprenta Gráfica Vallarta</p>
+  </footer>
+
+  <script type="module">
+    import { supabase } from './JS/supabase.js';
+
+    const form = document.getElementById('formEditar');
+    const nombreInput = document.getElementById('nombre');
+    const sucursalInput = document.getElementById('sucursal');
+    const paginaInput = document.getElementById('pagina');
+
+    const params = new URLSearchParams(window.location.search);
+    const doctorId = params.get('id');
+
+    if (!doctorId) {
+      alert('ID de doctor no proporcionado.');
+      window.location.href = 'index.html';
+    }
+
+    // Cargar datos existentes
+    async function cargarDatos() {
+      const { data, error } = await supabase
+        .from('doctores')
+        .select('*')
+        .eq('id', doctorId)
+        .single();
+
+      if (error || !data) {
+        alert('Error al cargar doctor.');
+        window.location.href = 'index.html';
+      }
+
+      nombreInput.value = data.nombre_completo;
+      sucursalInput.value = data.sucursal;
+      paginaInput.value = data.pagina;
+    }
+
+    cargarDatos();
+
+    // Guardar cambios
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const { error } = await supabase
+        .from('doctores')
+        .update({
+          nombre_completo: nombreInput.value.trim(),
+          sucursal: sucursalInput.value,
+          pagina: parseInt(paginaInput.value)
+        })
+        .eq('id', doctorId);
+
+      if (error) {
+        alert('❌ Error al actualizar.');
+        console.error(error);
+      } else {
+        alert('✅ Doctor actualizado con éxito.');
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
